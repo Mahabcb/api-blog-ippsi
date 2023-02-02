@@ -17,6 +17,16 @@ services:
       # - ./docker/db/data:/var/lib/postgresql/data:rw
 ###< doctrine/doctrine-bundle ###
 
+  phpmyadmin:
+    image: phpmyadmin
+    environment:
+      PMA_HOST: database
+      PMA_ROOT_PASSWORD: password
+      PMA_DATABASE: blog
+    ports:
+      - '8081:80'
+
+
 volumes:
 ###> doctrine/doctrine-bundle ###
   database_data:
