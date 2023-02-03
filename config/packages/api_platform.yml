@@ -1,4 +1,9 @@
 api_platform:
+    swagger:
+        api_keys:
+            JWT:
+            name: Authorization
+            type: header
     title : "Mon blog API"
     description : "Api"
     defaults:
@@ -9,10 +14,6 @@ api_platform:
         jsonapi:  ['application/vnd.api+json']
         html:     ['text/html']
         csv:      ['text/csv']
-    swagger:
-        api_keys:
-            JWT:
-                name: Authorization
-                type: header
+
 
         
