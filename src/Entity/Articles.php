@@ -2,12 +2,27 @@
 
 namespace App\Entity;
 
-use App\Repository\ArticlesRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Category;
+use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\ArticlesRepository;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert; 
 
+#[ApiResource(
+    paginationItemsPerPage: 10,
+    normalizationContext: ['groups' => ['read:article']],
+    denormalizationContext: ['groups' => ['write:article']],
+)]
+#[Post(security: 'is_granted("ROLE_ADMIN")')]
+#[Patch(security: 'is_granted("ROLE_ADMIN")')]
+#[GetCollection]
+#[Delete(security: 'is_granted("ROLE_ADMIN")')]
 #[ORM\Entity(repositoryClass: ArticlesRepository::class,)]
 #[ORM\Table(name: 'article')]
 class Articles
@@ -15,17 +30,24 @@ class Articles
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:article'])]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message: 'Le titre ne peut pas être vide')]
+    #[Assert\Length(min: 3, max: 100)]
+    #[Groups(['read:article', 'write:article'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    #[Groups(['read:article', 'write:article'])]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
+    #[Groups(['read:article'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
+    #[Groups(['read:article', 'write:article'])]
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'articles')]
     private Collection $category;
 

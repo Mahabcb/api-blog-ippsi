@@ -1,13 +1,18 @@
 api_platform:
-    title: 'API BLOG'
-    description: 'UNE API POUR MON BLOG'
+    title : "Mon blog API"
+    description : "Api"
+    defaults:
+        pagination_items_per_page: 5
     formats:
-        jsonld:
-            mime_types: ['application/ld+json']
+        json:     ['application/json']
+        jsonld:   ['application/ld+json']
+        jsonapi:  ['application/vnd.api+json']
+        html:     ['text/html']
+        csv:      ['text/csv']
+    swagger:
+        api_keys:
+            JWT:
+                name: Authorization
+                type: header
 
-        json:
-            mime_types: ['application/json']
-
-        html:
-            mime_types: ['text/html']
         
